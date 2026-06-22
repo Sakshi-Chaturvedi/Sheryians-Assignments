@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taskly — Vanilla JS Task Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="app-header">
+      <a class="brand" href="#" aria-label="Taskly home">
+        <span class="brand-mark"><i class="ri-checkbox-circle-line"></i></span>
+        <span>
+          <strong>Taskly</strong>
+          <small>Vanilla DOM Manager</small>
+        </span>
+      </a>
+
+      <nav class="top-nav" aria-label="Page sections">
+        <a href="#tasks"><i class="ri-list-check-3"></i> Tasks</a>
+        <a href="#concepts"><i class="ri-node-tree"></i> Concepts</a>
+      </nav>
+
+      <button id="themeToggle" class="theme-btn" type="button" aria-label="Toggle theme">
+        <i class="ri-sun-line"></i>
+        <span>Light</span>
+      </button>
+    </header>
+
+    <main>
+      <section class="hero-section">
+        <div class="hero-copy">
+          <p class="eyebrow"><i class="ri-sparkling-2-line"></i> HTML • CSS • Vanilla JavaScript</p>
+          <h1>Plan your work without the boring dashboard vibe.</h1>
+          <p class="subtitle">A fully interactive task manager built with DOM APIs, event delegation, localStorage, attributes, properties, and event propagation demos.</p>
+          <div class="hero-actions">
+            <a class="primary-link" href="#create-task"><i class="ri-add-line"></i> Create a task</a>
+            <a class="secondary-link" href="#pipeline"><i class="ri-route-line"></i> View rendering flow</a>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Project highlights">
+          <div class="hero-card-top">
+            <span><i class="ri-flashlight-line"></i></span>
+            <p>No framework. No template. Just clean DOM APIs.</p>
+          </div>
+          <div class="mini-metrics">
+            <div>
+              <strong>8+</strong>
+              <span>DOM methods</span>
+            </div>
+            <div>
+              <strong>100%</strong>
+              <span>Responsive</span>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="workspace-grid" id="tasks">
+        <section class="panel task-form-section" id="create-task">
+          <div class="section-heading">
+            <span class="section-icon"><i class="ri-edit-box-line"></i></span>
+            <div>
+              <p class="section-kicker">Creation Module</p>
+              <h2>Create Task</h2>
+            </div>
+          </div>
+
+          <form id="taskForm" class="task-form">
+            <div class="field">
+              <label for="taskTitle">Task Title</label>
+              <input
+                id="taskTitle"
+                name="taskTitle"
+                type="text"
+                value="Default attribute value"
+                placeholder="Example: Complete DOM assignment"
+                autocomplete="off"
+              />
+            </div>
+
+            <div class="field">
+              <label for="taskCategory">Category</label>
+              <select id="taskCategory" name="taskCategory">
+                <option value="study">Study</option>
+                <option value="project">Project</option>
+                <option value="personal">Personal</option>
+                <option value="urgent">Urgent</option>
+              </select>
+            </div>
+
+            <button class="primary-btn" type="submit"><i class="ri-add-circle-line"></i> Add Task</button>
+          </form>
+
+          <div class="note-box">
+            <h3><i class="ri-code-s-slash-line"></i> Attributes vs Properties</h3>
+            <p><strong>input.value:</strong> <span id="propertyValue"></span></p>
+            <p><strong>input.getAttribute("value"):</strong> <span id="attributeValue"></span></p>
+            <p class="small-text">
+              Try typing in the input. The <code>value</code> property changes with the current user input,
+              but <code>getAttribute("value")</code> shows the original HTML attribute value unless changed using
+              <code>setAttribute()</code>.
+            </p>
+          </div>
+        </section>
+
+        <section class="panel controls-section">
+          <div class="section-heading">
+            <span class="section-icon"><i class="ri-equalizer-line"></i></span>
+            <div>
+              <p class="section-kicker">Controls</p>
+              <h2>Search & Filter</h2>
+            </div>
+          </div>
+
+          <div class="controls-grid">
+            <div class="field input-with-icon">
+              <label for="searchInput">Search Tasks</label>
+              <i class="ri-search-line"></i>
+              <input id="searchInput" type="search" placeholder="Search by title..." />
+            </div>
+
+            <div class="field">
+              <label for="filterCategory">Filter by Category</label>
+              <select id="filterCategory">
+                <option value="all">All Categories</option>
+                <option value="study">Study</option>
+                <option value="project">Project</option>
+                <option value="personal">Personal</option>
+                <option value="urgent">Urgent</option>
+              </select>
+            </div>
+
+            <button id="clearAllBtn" class="danger-btn" type="button"><i class="ri-delete-bin-6-line"></i> Clear All</button>
+          </div>
+
+          <div class="stats">
+            <div class="stat-card">
+              <span id="totalCount">0</span>
+              <p><i class="ri-stack-line"></i> Total</p>
+            </div>
+            <div class="stat-card">
+              <span id="completedCount">0</span>
+              <p><i class="ri-checkbox-circle-line"></i> Done</p>
+            </div>
+            <div class="stat-card">
+              <span id="pendingCount">0</span>
+              <p><i class="ri-time-line"></i> Pending</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel tasks-section">
+          <div class="section-heading spread">
+            <div class="heading-left">
+              <span class="section-icon"><i class="ri-list-check-3"></i></span>
+              <div>
+                <p class="section-kicker">Dynamic Cards</p>
+                <h2>Your Tasks</h2>
+              </div>
+            </div>
+            <span class="soft-pill"><i class="ri-database-2-line"></i> Saved locally</span>
+          </div>
+          <div id="taskList" class="task-list" aria-live="polite"></div>
+        </section>
+      </section>
+
+      <section class="concept-grid" id="concepts">
+        <section class="panel propagation-section">
+          <div class="section-heading">
+            <span class="section-icon"><i class="ri-broadcast-line"></i></span>
+            <div>
+              <p class="section-kicker">Event Flow</p>
+              <h2>Propagation Demo</h2>
+            </div>
+          </div>
+          <p class="muted">Open the browser console and click the child button to see bubbling and capturing order.</p>
+
+          <div id="grandparent" class="box grandparent">
+            <span><i class="ri-parent-line"></i> Grandparent</span>
+            <div id="parent" class="box parent">
+              <span><i class="ri-node-tree"></i> Parent</span>
+              <button id="childBtn" class="child-btn" type="button"><i class="ri-cursor-line"></i> Child Button</button>
+            </div>
+          </div>
+
+          <div class="console-help">
+            <p><strong>Bubbling:</strong> Child → Parent → Grandparent</p>
+            <p><strong>Capturing:</strong> Grandparent → Parent → Child</p>
+          </div>
+        </section>
+
+        <section class="panel pipeline-section" id="pipeline">
+          <div class="section-heading">
+            <span class="section-icon"><i class="ri-git-branch-line"></i></span>
+            <div>
+              <p class="section-kicker">Browser Rendering</p>
+              <h2>Rendering Pipeline</h2>
+            </div>
+          </div>
+          <p class="muted">How the browser converts HTML and CSS into visible pixels on screen.</p>
+
+          <div class="flow-diagram">
+            <div class="flow-lane">
+              <div class="flow-card"><i class="ri-html5-line"></i> HTML</div>
+              <span class="arrow"><i class="ri-arrow-down-line"></i></span>
+              <div class="flow-card">Parsing</div>
+              <span class="arrow"><i class="ri-arrow-down-line"></i></span>
+              <div class="flow-card">Tokenization</div>
+              <span class="arrow"><i class="ri-arrow-down-line"></i></span>
+              <div class="flow-card">DOM Tree</div>
+            </div>
+
+            <div class="merge-symbol"><i class="ri-add-line"></i></div>
+
+            <div class="flow-lane">
+              <div class="flow-card"><i class="ri-css3-line"></i> CSS</div>
+              <span class="arrow"><i class="ri-arrow-down-line"></i></span>
+              <div class="flow-card">CSSOM Tree</div>
+            </div>
+
+            <div class="flow-result">
+              <div class="flow-card wide">DOM Tree + CSSOM Tree</div>
+              <span class="arrow"><i class="ri-arrow-down-line"></i></span>
+              <div class="flow-card final"><i class="ri-window-line"></i> Render Tree</div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+
+  <div id="editModal" class="modal-overlay" aria-hidden="true">
+    <div class="edit-modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+      <button id="closeEditModal" class="modal-close" type="button" aria-label="Close edit popup">
+        <i class="ri-close-line"></i>
+      </button>
+
+      <div class="modal-heading">
+        <span class="section-icon"><i class="ri-edit-2-line"></i></span>
+        <div>
+          <p class="section-kicker">Update Task</p>
+          <h2 id="editModalTitle">Edit task title</h2>
+        </div>
+      </div>
+
+      <form id="editTaskForm" class="edit-task-form">
+        <input type="hidden" id="editTaskId" />
+        <div class="field">
+          <label for="editTaskTitle">Task Title</label>
+          <input id="editTaskTitle" type="text" autocomplete="off" />
+          <small id="editError" class="modal-error" aria-live="polite"></small>
+        </div>
+
+        <div class="modal-actions">
+          <button id="cancelEditBtn" class="secondary-action-btn" type="button"><i class="ri-close-circle-line"></i> Cancel</button>
+          <button class="primary-btn" type="submit"><i class="ri-save-3-line"></i> Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
