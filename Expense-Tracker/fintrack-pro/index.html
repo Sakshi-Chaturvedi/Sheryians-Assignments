@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinTrack Pro | Personal Finance Tracker</title>
+  <meta name="description" content="A browser-based personal finance tracker using HTML, CSS and JavaScript." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,650;9..144,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="app-header">
+    <nav class="nav-shell" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="FinTrack Pro home">
+        <span class="brand-mark">F</span>
+        <span>
+          <strong>FinTrack</strong>
+          <small>Pro</small>
+        </span>
+      </a>
+
+      <div class="nav-actions">
+        <button class="ghost-btn" id="themeToggle" type="button" aria-label="Toggle theme">
+          <span id="themeIcon">☾</span>
+          <span class="hide-sm" id="themeText">Dark</span>
+        </button>
+        <button class="primary-btn" type="button" data-jump="transactionForm">+ Add transaction</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top" class="page-shell">
+    <section class="hero-grid">
+      <div class="hero-copy card-lift">
+        <p class="eyebrow">Personal finance, without the spreadsheet headache</p>
+        <h1>Track money clearly. Spend a little smarter.</h1>
+        <p class="hero-text">
+          FinTrack Pro keeps income, expenses, cash flow, currency preference and your profile settings inside your browser using Local Storage.
+        </p>
+        <div class="hero-actions">
+          <button class="primary-btn large" type="button" data-jump="transactionForm">Start tracking</button>
+          <button class="soft-btn large" type="button" data-jump="historySection">View history</button>
+        </div>
+      </div>
+
+      <aside class="balance-card card-lift" aria-label="Balance summary">
+        <div class="balance-topline">
+          <span>Current balance</span>
+          <span id="preferredCurrencyBadge">INR</span>
+        </div>
+        <strong id="balanceAmount">₹0</strong>
+        <p id="welcomeLine">Welcome back, Guest</p>
+
+        <div class="mini-summary">
+          <div>
+            <span>Total income</span>
+            <strong id="incomeAmount">₹0</strong>
+          </div>
+          <div>
+            <span>Total expense</span>
+            <strong id="expenseAmount">₹0</strong>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="stats-grid" aria-label="Finance overview">
+      <article class="stat-card">
+        <span class="stat-icon income-dot"></span>
+        <div>
+          <p>Income entries</p>
+          <strong id="incomeCount">0</strong>
+        </div>
+      </article>
+      <article class="stat-card">
+        <span class="stat-icon expense-dot"></span>
+        <div>
+          <p>Expense entries</p>
+          <strong id="expenseCount">0</strong>
+        </div>
+      </article>
+      <article class="stat-card">
+        <span class="stat-icon neutral-dot"></span>
+        <div>
+          <p>Saved records</p>
+          <strong id="recordCount">0</strong>
+        </div>
+      </article>
+    </section>
+
+    <section class="workspace-grid">
+      <article class="panel form-panel">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">New entry</p>
+            <h2>Add transaction</h2>
+          </div>
+          <span class="pill">Local only</span>
+        </div>
+
+        <form id="transactionForm" class="transaction-form" autocomplete="off">
+          <label>
+            <span>Transaction title</span>
+            <input id="titleInput" type="text" placeholder="Salary, grocery, freelance project..." required maxlength="48" />
+          </label>
+
+          <div class="form-row">
+            <label>
+              <span>Amount</span>
+              <input id="amountInput" type="number" min="0.01" step="0.01" placeholder="2500" required />
+            </label>
+            <label>
+              <span>Type</span>
+              <select id="typeInput" required>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="form-row">
+            <label>
+              <span>Currency</span>
+              <select id="currencyInput" required></select>
+            </label>
+            <label>
+              <span>Date</span>
+              <input id="dateInput" type="date" required />
+            </label>
+          </div>
+
+          <label>
+            <span>Category</span>
+            <input id="categoryInput" type="text" placeholder="Food, rent, travel, study..." maxlength="28" />
+          </label>
+
+          <button class="primary-btn full" type="submit">Save transaction</button>
+          <p class="form-note">Data stays on this device only. No login, no backend, no database.</p>
+        </form>
+      </article>
+
+      <article class="panel chart-panel">
+        <div class="section-title compact">
+          <div>
+            <p class="eyebrow">Cash flow</p>
+            <h2>Recent activity</h2>
+          </div>
+          <span class="pill" id="chartCurrencyLabel">INR</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="cashflowChart" width="800" height="360" aria-label="Cash flow chart"></canvas>
+          <div class="chart-empty" id="chartEmpty">Add a transaction to see your cash flow chart.</div>
+        </div>
+      </article>
+
+      <article class="panel settings-panel">
+        <div class="section-title compact">
+          <div>
+            <p class="eyebrow">Profile</p>
+            <h2>Preferences</h2>
+          </div>
+        </div>
+
+        <form id="profileForm" class="profile-form">
+          <label>
+            <span>Your name</span>
+            <input id="nameInput" type="text" placeholder="Sakshi" maxlength="32" />
+          </label>
+          <label>
+            <span>Preferred currency</span>
+            <select id="preferredCurrencyInput"></select>
+          </label>
+          <button class="soft-btn full" type="submit">Update profile</button>
+        </form>
+
+        <button class="danger-btn full" id="resetButton" type="button">Reset all saved data</button>
+      </article>
+    </section>
+
+    <section class="panel history-panel" id="historySection">
+      <div class="section-title history-title">
+        <div>
+          <p class="eyebrow">History</p>
+          <h2>Transactions</h2>
+        </div>
+        <div class="history-tools">
+          <div class="filter-tabs" role="tablist" aria-label="Transaction filters">
+            <button class="filter-btn active" type="button" data-filter="all">All</button>
+            <button class="filter-btn" type="button" data-filter="income">Income</button>
+            <button class="filter-btn" type="button" data-filter="expense">Expense</button>
+          </div>
+          <input class="search-input" id="searchInput" type="search" placeholder="Search transactions" />
+        </div>
+      </div>
+
+      <div class="transaction-list" id="transactionList"></div>
+      <div class="empty-state" id="emptyState">
+        <strong>No transactions yet</strong>
+        <p>Add your first income or expense entry to begin.</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
